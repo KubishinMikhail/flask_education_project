@@ -11,11 +11,6 @@ from data.users import User
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "my mega secret key"
 
-USERS = {"Alex": "123456",
-         "Boris": "qwerty",
-         "Albert": "LLlka0l0"}
-user = ''
-
 login_manager = LoginManager()
 login_manager.init_app(app)
 
