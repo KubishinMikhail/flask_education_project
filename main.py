@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, redirect, make_response, session, flash
 from forms.loginform import LoginForm
-from forms.user import RegisterForm
+from forms.registerform import RegisterForm
 from flask_login import LoginManager
 from flask_login import login_user, login_required, logout_user, current_user
 
 from data import db_session
-from data.news import News
+from data.expenses import Expenses
 from data.users import User
 
 app = Flask(__name__)
@@ -16,34 +16,20 @@ login_manager.init_app(app)
 
 USERS = dict()
 
+
 @app.route("/")
 def index():
-    db_sess = db_session.create_session()
     if current_user.is_authenticated:
-        news = db_sess.query(News).filter(
-            (News.user == current_user) | (News.is_private != True))
+        db_sess = db_session.create_session()
+        expenses = db_sess.query(Expenses)
     else:
-        news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("index.html", news=news)
-
-
-@app.route("/sign_in", methods=['GET', 'POST'])
-def sing_in():
-    form = LoginForm()
-    global user
-    if form.validate_on_submit():
-        if form.username.data in USERS:
-            if form.password.data == USERS[form.username.data]:
-                user = form.username.data
-                return redirect("/lms")
-        flash(f'Ошибка авторизации!')
-    return render_template("sign_in.html", form=form)
+        return redirect('/login')
+    return render_template("index.html", expenses=expenses)
 
 
 @app.route("/lms")
 def lms():
-    data = {"username": user, "title": "Личный кабинет"}
-    return render_template("lms.html", **data)
+    return render_template("lms.html")
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -62,7 +48,6 @@ def reqister():
         user = User(
             name=form.name.data,
             email=form.email.data,
-            about=form.about.data
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -120,7 +105,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect("/")
+    return redirect("/login")
 
 
 if __name__ == "__main__":
