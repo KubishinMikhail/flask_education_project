@@ -14,6 +14,7 @@ app.config['SECRET_KEY'] = "my mega secret key"
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+USERS = dict()
 
 @app.route("/")
 def index():
