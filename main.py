@@ -3,6 +3,7 @@ from forms.loginform import LoginForm
 from forms.registerform import RegisterForm
 from flask_login import LoginManager
 from flask_login import login_user, login_required, logout_user, current_user
+from forms.expensesform import ExpenseForm
 
 from data import db_session
 from data.expenses import Expenses
@@ -29,10 +30,20 @@ def index():
 
 @app.route("/lms")
 def lms():
+    form = ExpenseForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        expenses = Expenses()
+        expenses.title = form.title.data
+        expenses.money = form.money.data
+        expenses.created_date = form.created_date.data
+        current_user.expenses.append(expenses)
+        db_sess.merge(current_user)
+        db_sess.commit()
     if current_user.is_authenticated:
         db_sess = db_session.create_session()
         expenses = db_sess.query(Expenses).filter(Expenses.user == current_user)
-    return render_template("lms.html", expenses=expenses)
+    return render_template("lms.html", expenses=expenses, form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])

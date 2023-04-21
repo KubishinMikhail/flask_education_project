@@ -2,6 +2,53 @@
 
 {% block content %}
     <div>Пользователь - {{current_user.name}}</div>
+{% if current_user.is_authenticated %}
+    <a href="news" class="btn btn-secondary">Добавить запись</a>
+{% endif %}
+
+
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.title.label }}<br>
+        {{ form.title(class="form-control") }}<br>
+        {% for error in form.title.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.money.label }}<br>
+        {{ form.money(class="form-control") }}<br>
+        {% for error in form.money.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+
+
+    <p>
+        {{ form.created_date.label }}<br>
+        {{ form.created_date(class="form-control") }}<br>
+        {% for error in form.created_date.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+
+
+
+
+    {{message}}
+</form>
+
+
+
+
         {% for item in expenses%}
         <div class="col-md6 border rounded">
         <div>
