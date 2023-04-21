@@ -29,7 +29,10 @@ def index():
 
 @app.route("/lms")
 def lms():
-    return render_template("lms.html")
+    if current_user.is_authenticated:
+        db_sess = db_session.create_session()
+        expenses = db_sess.query(Expenses).filter(Expenses.user == current_user)
+    return render_template("lms.html", expenses=expenses)
 
 
 @app.route('/register', methods=['GET', 'POST'])

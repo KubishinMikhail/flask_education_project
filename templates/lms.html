@@ -2,4 +2,14 @@
 
 {% block content %}
     <div>Пользователь - {{current_user.name}}</div>
+        {% for item in expenses%}
+        <div class="col-md6 border rounded">
+        <div>
+            {{item.money}} руб.
+        </div>
+        <div>
+            {{item.user.name}}, {{item.created_date}}
+        </div>
+        </div>
+    {% endfor %}
 {% endblock %}
