@@ -1,3 +1,4 @@
+import datetime
 from flask import Flask, render_template, request, redirect, make_response, session, flash
 from forms.loginform import LoginForm
 from forms.registerform import RegisterForm
@@ -21,7 +22,8 @@ USERS = dict()
 def index():
     if current_user.is_authenticated:
         db_sess = db_session.create_session()
-        expenses = db_sess.query(Expenses)
+        expenses = db_sess.query(Expenses).order_by(Expenses.created_date.desc()).all()
+
     else:
         return redirect('/login')
     return render_template("index.html", expenses=expenses)

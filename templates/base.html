@@ -12,7 +12,7 @@
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
-        <div>Семейный бюджет</div>
+        <div><a class="navbar-toggler" href="/">Семейный бюджет</a></div>
         {% if current_user.is_authenticated %}
             <a class="navbar-toggler" href="/lms">Личный кабинет</a>
             <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
