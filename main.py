@@ -1,5 +1,5 @@
 import datetime
-from flask import Flask, render_template, request, redirect, make_response, session, flash
+from flask import Flask, render_template, request, redirect, make_response, session, flash, abort
 from forms.loginform import LoginForm
 from forms.registerform import RegisterForm
 from flask_login import LoginManager
@@ -30,7 +30,7 @@ def index():
     return render_template("index.html", expenses=expenses)
 
 
-@app.route("/lms")
+@app.route("/lms", methods=['GET', 'POST'])
 def lms():
     form = ExpenseForm()
     if form.validate_on_submit():
@@ -42,10 +42,25 @@ def lms():
         current_user.expenses.append(expenses)
         db_sess.merge(current_user)
         db_sess.commit()
+        return redirect('/lms')
     if current_user.is_authenticated:
         db_sess = db_session.create_session()
         expenses = db_sess.query(Expenses).filter(Expenses.user == current_user)
     return render_template("lms.html", expenses=expenses, form=form)
+
+
+@app.route('/news_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def expenses_delete(id):
+    db_sess = db_session.create_session()
+    exp = db_sess.query(Expenses).filter(Expenses.id == id,
+                                      Expenses.user == current_user).first()
+    if exp:
+        db_sess.delete(exp)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/lms')
 
 
 @app.route('/register', methods=['GET', 'POST'])
