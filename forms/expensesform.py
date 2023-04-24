@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired
 
 
 class ExpenseForm(FlaskForm):
-    title = StringField('Заголовок', validators=[DataRequired()])
-    money = IntegerField("стоимость")
+    title = StringField('Категория расходов', validators=[DataRequired()])
+    money = IntegerField("Сумма")
     created_date = DateField("Дата", format="%Y-%m-%d")
-    submit = SubmitField('добавить')
+    submit = SubmitField('Добавить')
