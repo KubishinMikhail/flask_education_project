@@ -11,12 +11,14 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-light bg-light">
-        <div><a class="navbar-toggler" href="/">Семейный бюджет</a></div>
+    <nav class="navbar navbar-light">
         {% if current_user.is_authenticated %}
-            <a class="navbar-toggler" href="/lms">Личный кабинет</a>
-            <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+            <a href="/"><button type="button" class="btn btn-outline-info">Семейный бюджет</button></a>
+            <a href="/lms"><button type="button" class="btn btn-outline-info">Личный кабинет</button></a>
+            <a href="/logout"><button type="button" class="btn btn-outline-info">{{ current_user.name }}</button></a>
         {% else %}
+        <div>
+        </div>
     <div>
         <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
         <a class="btn btn-success" href="/login">Войти</a>

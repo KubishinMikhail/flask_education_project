@@ -42,8 +42,10 @@
 
 
 
+        <h2>Личные расходы {{ current_user.name }}</h2>
         {% for item in expenses%}
         <div class="col-md6 border rounded">
+            <h4>{{item.title}}</h4>
         <div>
             {{item.money}} руб.
         </div>
