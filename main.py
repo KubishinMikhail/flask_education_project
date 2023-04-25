@@ -33,7 +33,7 @@ def index():
 @app.route("/lms", methods=['GET', 'POST'])
 def lms():
     form = ExpenseForm()
-    if form.validate_on_submit():
+    if form.validate_on_submit() and form.money.data > 0:
         db_sess = db_session.create_session()
         expenses = Expenses()
         expenses.title = form.title.data
